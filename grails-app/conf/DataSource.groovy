@@ -11,7 +11,7 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop"
+            dbCreate = "update"
 			url = "jdbc:oracle:thin:@localhost:1521:xe"	
 			username = "grailsDev"
 			password = "grailsDev"			
@@ -19,7 +19,7 @@ environments {
     }
     test {
         dataSource {
-            dbCreate = "update"            
+            dbCreate = "create-drop"            
 			url = "jdbc:oracle:thin:@localhost:1521:xe"
 			username = "grailsTest"    
 			password = "grailsTest"

@@ -28,21 +28,19 @@
                             <td valign="top" class="value">${fieldValue(bean: bookInstance, field: "id")}</td>
                             
                         </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="book.author.label" default="Author" /></td>
-                            
-                            <td valign="top" class="value"><g:link controller="author" action="show" id="${bookInstance?.author?.id}">${bookInstance?.author?.encodeAsHTML()}</g:link></td>
-                            
-                        </tr>
-                    
+                    						                    
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="book.title.label" default="Title" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: bookInstance, field: "title")}</td>
-                            
+                            <td valign="top" class="value">${fieldValue(bean: bookInstance, field: "title")}</td>                            
                         </tr>
-                    
+						<tr><td>Authors:</td><td>&nbsp;</td></tr>
+						<g:each var="contribution" in="${bookInstance.contributions}">
+							<tr>
+								<td>&nbsp;</td>
+								<td>${contribution.author}</td>
+							</tr>							
+						</g:each>                    
                     </tbody>
                 </table>
             </div>

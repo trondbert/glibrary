@@ -30,16 +30,6 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="author"><g:message code="book.author.label" default="Author" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: bookInstance, field: 'author', 'errors')}">
-                                    <g:select name="author.id" from="${no.steria.trv.Author.list()}" optionKey="id" value="${bookInstance?.author?.id}" noSelection="['null': '']" />
-                                </td>
-                            </tr>
-                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="title"><g:message code="book.title.label" default="Title" /></label>
@@ -47,8 +37,15 @@
                                 <td valign="top" class="value ${hasErrors(bean: bookInstance, field: 'title', 'errors')}">
                                     <g:textField name="title" value="${bookInstance?.title}" />
                                 </td>
-                            </tr>
-                        
+                            </tr> 
+ 							<tr><td>Authors:</td><td>&nbsp;</td></tr>
+							<g:each var="contribution" in="${bookInstance.contributions}">
+								<tr>
+									<td>&nbsp;</td>
+									<td valign="top">
+                                    <g:select name="contribution.author.id" from="${no.steria.trv.Author.list()}"/>                                
+								</tr>
+							</g:each>
                         </tbody>
                     </table>
                 </div>

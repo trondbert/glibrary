@@ -44,12 +44,12 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="author.book.label" default="Book" /></td>
+                            <td valign="top" class="name"><g:message code="author.books.label" default="Books"/></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
-                                <g:each in="${authorInstance.book}" var="b">
-                                    <li><g:link controller="book" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></li>
+                                <g:each var = "contr" in="${authorInstance.contributions}">
+                                    <li><g:link controller="book" action="show" id="${contr.book.id}">${contr.book?.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>

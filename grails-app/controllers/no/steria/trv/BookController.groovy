@@ -20,8 +20,11 @@ class BookController {
     }
 
     def save = {
-        def bookInstance = new Book(params)
-        if (bookInstance.save(flush: true)) {
+    	def authorInstance = Author.get(params.initialAuthor.id)    	     	
+        def bookInstance = new Book(title:params.title)
+        def contrib = new Contribution(author:authorInstance,book:bookInstance)
+        
+        if (bookInstance.save(flush: true) && contrib.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"
             redirect(action: "show", id: bookInstance.id)
         }
@@ -57,8 +60,7 @@ class BookController {
         if (bookInstance) {
             if (params.version) {
                 def version = params.version.toLong()
-                if (bookInstance.version > version) {
-                    
+                if (bookInstance.version > version) {                    
                     bookInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'book.label', default: 'Book')] as Object[], "Another user has updated this Book while you were editing")
                     render(view: "edit", model: [bookInstance: bookInstance])
                     return

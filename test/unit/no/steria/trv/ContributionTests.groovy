@@ -2,8 +2,7 @@ package no.steria.trv
 
 import grails.test.*
 
-
-class AuthorControllerTests extends ControllerUnitTestCase {
+class ContributionTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
     }

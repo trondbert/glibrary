@@ -26,14 +26,13 @@
             <g:form action="save" >
                 <div class="dialog">
                     <table>
-                        <tbody>
-                        
+                        <tbody>                        
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="author"><g:message code="book.author.label" default="Author" /></label>
+                                    <label for="initialAuthor"><g:message code="book.initialAuthor.label" default="Replace me" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: bookInstance, field: 'author', 'errors')}">
-                                    <g:select name="author.id" from="${no.steria.trv.Author.list()}" optionKey="id" value="${bookInstance?.author?.id}" noSelection="['null': '']" />
+                                <td valign="top" class="value ${hasErrors(bean: bookInstance, field: 'initialAuthor', 'errors')}">
+                                    <g:select name="initialAuthor.id" from="${no.steria.trv.Author.list()}" optionKey="id" value="${bookInstance?.initialAuthor?.id}" noSelection="['null': '']" />
                                 </td>
                             </tr>
                         

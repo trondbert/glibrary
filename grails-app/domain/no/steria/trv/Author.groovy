@@ -1,9 +1,10 @@
 package no.steria.trv
 
-import no.steria.trv.Book
+import no.steria.trv.Contribution
 
 class Author {
-	static hasMany = [book:Book]
+	static transients = ["books"]
+	static hasMany = [contributions:Contribution,books:Book]
 	String firstName
 	String lastName
 	

@@ -1,16 +1,19 @@
 package no.steria.trv
 
-import no.steria.trv.Author
+import no.steria.trv.Contribution
 
 class Book {
+	static transients = ["initialAuthor"]
 	String title
-	Author author
+	static hasMany = [contributions:Contribution]
+	
+	Author initialAuthor	
 	
 	static constraints = {
-		author(nullable:true)
+		title(nullable:false)		
 	}
 	
 	String toString() {
 		title
-	}
+	}	
 }

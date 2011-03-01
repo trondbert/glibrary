@@ -21,12 +21,10 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="book.id.label" default="Id" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: bookInstance, field: "id")}</td>
-                            
                         </tr>
                     						                    
                         <tr class="prop">
@@ -34,13 +32,14 @@
                             
                             <td valign="top" class="value">${fieldValue(bean: bookInstance, field: "title")}</td>                            
                         </tr>
-						<tr><td>Authors:</td><td>&nbsp;</td></tr>
+                        <g:set var="label" value="Authors:"/>						
 						<g:each var="contribution" in="${bookInstance.contributions}">
 							<tr>
-								<td>&nbsp;</td>
+								<td>${label}</td>
 								<td>${contribution.author}</td>
 							</tr>							
-						</g:each>                    
+						</g:each>
+						<g:set var="label" value = "&nbsp;"/>                    
                     </tbody>
                 </table>
             </div>

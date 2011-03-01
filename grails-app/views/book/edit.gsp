@@ -37,14 +37,15 @@
                                 <td valign="top" class="value ${hasErrors(bean: bookInstance, field: 'title', 'errors')}">
                                     <g:textField name="title" value="${bookInstance?.title}" />
                                 </td>
-                            </tr> 
- 							<tr><td>Authors:</td><td>&nbsp;</td></tr>
+                            </tr> 							
+							<g:set var="label" value="Authors:"/>
 							<g:each var="contribution" in="${bookInstance.contributions}">
 								<tr>
-									<td>&nbsp;</td>
+									<td>${label}</td>
 									<td valign="top">
-                                    <g:select name="contribution.author.id" from="${no.steria.trv.Author.list()}"/>                                
+                                    <g:select name="contribution_${contribution.id}.author.id" from="${no.steria.trv.Author.list()}"/>                                
 								</tr>
+								<g:set var="label" value = "&nbsp;"/>
 							</g:each>
                         </tbody>
                     </table>

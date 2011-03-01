@@ -1,39 +1,60 @@
 package no.steria.trv
 
+import java.util.HashSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 class BookController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+		
     def index = {
         redirect(action: "list", params: params)
     }
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [bookInstanceList: Book.list(params), bookInstanceTotal: Book.count()]
+        return [bookInstanceList: Book.list(params), bookInstanceTotal: Book.count()]
     }
 
-    def create = {
-        def bookInstance = new Book()
-        bookInstance.properties = params
-        return [bookInstance: bookInstance]
-    }
-
-    def save = {
-    	def authorInstance = Author.get(params.initialAuthor.id)    	     	
-        def bookInstance = new Book(title:params.title)
-        def contrib = new Contribution(author:authorInstance,book:bookInstance)
-        
-        if (bookInstance.save(flush: true) && contrib.save(flush: true)) {
+	def create = {
+		def book = new Book()
+		book.properties = params
+		return [bookInstance: book]
+	}
+	
+	def save = {
+    	def bookInstance = saveNewBook()
+		
+		def contrib = bookInstance.contributions.toArray()[0]
+		
+        if (!bookInstance.hasErrors() && !contrib.hasErrors()) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"
             redirect(action: "show", id: bookInstance.id)
         }
         else {
-            render(view: "create", model: [bookInstance: bookInstance])
+            render(view: "create", model: [bookInstance: bookInstance, contributions: bookInstance.contributions,initialContribution: bookInstance.contributions?.toArray()[0]])
         }
     }
 
-    def show = {
+	def saveNewBook = {
+		def authorInstance = Author.get(params.initialAuthor?.id)
+				
+		def bookInstance = new Book(title:params.title)
+		
+		def contrib = new Contribution(author:authorInstance,book:bookInstance)
+		bookInstance.addToContributions(contrib)
+		
+		if (bookInstance.validate() && contrib.validate()) {
+			bookInstance.save()
+			contrib.save()
+		}				
+		
+		log.debug "book saved"
+		return bookInstance
+	}	
+
+	def show = {
         def bookInstance = Book.get(params.id)
         if (!bookInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), params.id])}"
@@ -44,7 +65,7 @@ class BookController {
         }
     }
 
-    def edit = {
+	def edit = {
         def bookInstance = Book.get(params.id)
         if (!bookInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), params.id])}"
@@ -55,7 +76,7 @@ class BookController {
         }
     }
 
-    def update = {
+	def update = {
         def bookInstance = Book.get(params.id)
         if (bookInstance) {
             if (params.version) {
@@ -67,6 +88,7 @@ class BookController {
                 }
             }
             bookInstance.properties = params
+			bookInstance.validate()
             if (!bookInstance.hasErrors() && bookInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"
                 redirect(action: "show", id: bookInstance.id)

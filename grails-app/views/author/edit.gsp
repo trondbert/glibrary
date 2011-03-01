@@ -24,49 +24,48 @@
                 <g:renderErrors bean="${authorInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <g:form method="post" >
+            <g:form method="post">
                 <g:hiddenField name="id" value="${authorInstance?.id}" />
                 <g:hiddenField name="version" value="${authorInstance?.version}" />
                 <div class="dialog">
-                    <table>
-                        <tbody>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="firstName"><g:message code="author.firstName.label" default="First Name" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: authorInstance, field: 'firstName', 'errors')}">
-                                    <g:textField name="firstName" maxlength="40" value="${authorInstance?.firstName}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="lastName"><g:message code="author.lastName.label" default="Last Name" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: authorInstance, field: 'lastName', 'errors')}">
-                                    <g:textField name="lastName" maxlength="40" value="${authorInstance?.lastName}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="book"><g:message code="author.book.label" default="Book" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: authorInstance, field: 'book', 'errors')}">
-                                    
-<ul>
-<g:each in="${authorInstance?.book?}" var="b">
-    <li><g:link controller="book" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></li>
-</g:each>
-</ul>
-<g:link controller="book" action="create" params="['author.id': authorInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'book.label', default: 'Book')])}</g:link>
-
-                                </td>
-                            </tr>
-                        
-                        </tbody>
-                    </table>
+                <table>
+                    <tbody>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name">
+                              <label for="firstName"><g:message code="author.firstName.label" default="First Name" /></label>
+                            </td>
+                            <td valign="top" class="value ${hasErrors(bean: authorInstance, field: 'firstName', 'errors')}">
+                                <g:textField name="firstName" maxlength="40" value="${authorInstance?.firstName}" />
+                            </td>
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name">
+                              <label for="lastName"><g:message code="author.lastName.label" default="Last Name" /></label>
+                            </td>
+                            <td valign="top" class="value ${hasErrors(bean: authorInstance, field: 'lastName', 'errors')}">
+                                <g:textField name="lastName" maxlength="40" value="${authorInstance?.lastName}" />
+                            </td>
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name">
+                              <label for="books"><g:message code="author.books.label" default="Books" /></label>
+                            </td>
+                            <td valign="top" class="value ${hasErrors(bean: authorInstance, field: 'contributions', 'errors')}">
+                                <ul>
+						<g:each in="${authorInstance?.contributions?}" var="c">
+									<li><g:link controller="book" action="show" id="${c.book.id}">${c.book.encodeAsHTML()}</g:link></li>
+						</g:each>
+					</ul>
+					<g:link controller="book" action="create" params="['initialAuthor.id': authorInstance?.id]">
+					${message(code: 'default.add.label', args: [message(code: 'book.label', default: 'Book')])}</g:link>
+                            </td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
                 </div>
                 <div class="buttons">
                     <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>

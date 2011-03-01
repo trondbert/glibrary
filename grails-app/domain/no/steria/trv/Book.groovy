@@ -3,14 +3,13 @@ package no.steria.trv
 import no.steria.trv.Contribution
 
 class Book {
-	static transients = ["initialAuthor"]
+	static transients = ["initialContribution"]
 	String title
+	List contributions
 	static hasMany = [contributions:Contribution]
 	
-	Author initialAuthor	
-	
 	static constraints = {
-		title(nullable:false)		
+		title(blank:false)		
 	}
 	
 	String toString() {

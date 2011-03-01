@@ -1,5 +1,3 @@
-
-
 <%@ page import="no.steria.trv.Book" %>
 <html>
     <head>
@@ -18,11 +16,11 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <g:hasErrors bean="${bookInstance}">
+            <g:hasErrors bean="${bookInstance}">            
             <div class="errors">
-                <g:renderErrors bean="${bookInstance}" as="list" />
+                <g:renderErrors bean="${bookInstance}" as="list"/>
             </div>
-            </g:hasErrors>
+            </g:hasErrors>            	        
             <g:form action="save" >
                 <div class="dialog">
                     <table>
@@ -30,12 +28,12 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="initialAuthor"><g:message code="book.initialAuthor.label" default="Replace me" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: bookInstance, field: 'initialAuthor', 'errors')}">
-                                    <g:select name="initialAuthor.id" from="${no.steria.trv.Author.list()}" optionKey="id" value="${bookInstance?.initialAuthor?.id}" noSelection="['null': '']" />
-                                </td>
-                            </tr>
-                        
+                                </td>                                                                
+                                <td valign="top" class="fds ${authorClassAttr}">
+                                    <g:select name="initialAuthor.id" from="${no.steria.trv.Author.list()}" 
+                                    	optionKey="id" value="${contrib?.author?.id}"/>                                    
+                                </td>                                
+                            </tr>                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="title"><g:message code="book.title.label" default="Title" /></label>
@@ -53,5 +51,7 @@
                 </div>
             </g:form>
         </div>
+            <g:renderErrors bean="${bookInstance}" as="list"/>
+                
     </body>
 </html>

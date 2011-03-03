@@ -87,3 +87,5 @@ log4j = {
 	
 	debug  'no.steria.trv'
 }
+
+grails.views.javascript.library="jquery"

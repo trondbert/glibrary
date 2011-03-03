@@ -38,17 +38,16 @@ class BookController {
     }
 
 	def saveNewBook = {
-		def authorInstance = Author.get(params.initialAuthor?.id)
-				
-		def bookInstance = new Book(title:params.title)
-		
-		def contrib = new Contribution(author:authorInstance,book:bookInstance)
-		bookInstance.addToContributions(contrib)
-		
-		if (bookInstance.validate() && contrib.validate()) {
+		def bookInstance = new Book()
+		//necessary for testing
+		bookInstance.contributions.add(
+			new Contribution(author:new Author(firstName:"gredfdg",lastName:"praks"), book:bookInstance));
+		bookInstance.properties = params
+						
+		if (bookInstance.validate()) {
 			bookInstance.save()
-			contrib.save()
-		}				
+			bookInstance.contributions*.save()
+		}
 		
 		log.debug "book saved"
 		return bookInstance

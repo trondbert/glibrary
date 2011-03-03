@@ -26,8 +26,7 @@
             <g:form action="save" >
                 <div class="dialog">
                     <table>
-                        <tbody>
-                        
+                        <tbody>                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="firstName"><g:message code="author.firstName.label" default="First Name" /></label>

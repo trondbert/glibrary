@@ -1,6 +1,10 @@
 package no.steria.trv
 
 import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.collections.FactoryUtils;
+import org.apache.commons.collections.MapUtils;
 
 import grails.test.*
 
@@ -22,10 +26,9 @@ class BookControllerTests extends ControllerUnitTestCase {
 		mockDomain(Book) 
 		
 		mockDomain(Contribution)
-
-		BookController.metaClass.getParams = {-> [title:"foo",initialAuthor:[id:1]] }
-				
+						
 		def controller = new BookController();
+		BookController.metaClass.getParams = { -> ["create":"Create", "title":"foo", "contributions[0].author.id":"1"] }
 		
 		controller.save()
 		
@@ -36,6 +39,7 @@ class BookControllerTests extends ControllerUnitTestCase {
 		assertEquals 1, Contribution.list().size()
 		assertEquals 1, newBook.contributions.size()
 		def newContr = Contribution.list().get(0)
+		assertEquals 1, newBook.contributions.get(0).id
 		assertEquals author, newContr.author
 		assertEquals newBook, newContr.book
     }

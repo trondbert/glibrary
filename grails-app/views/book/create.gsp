@@ -28,10 +28,10 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="initialAuthor"><g:message code="book.initialAuthor.label" default="Replace me" /></label>
-                                </td>                                                                
-                                <td valign="top" class="fds ${authorClassAttr}">
-                                    <g:select name="initialAuthor.id" from="${no.steria.trv.Author.list()}" 
-                                    	optionKey="id" value="${contrib?.author?.id}"/>                                    
+                                </td>
+                                <td valign="top" class="value">
+                                    <g:select name="contributions[0].author.id" from="${no.steria.trv.Author.list()}" 
+                                    	optionKey="id" value="${contributions?.getAt(0)?.author?.id}"/>
                                 </td>                                
                             </tr>                        
                             <tr class="prop">
@@ -50,8 +50,6 @@
                     <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" /></span>
                 </div>
             </g:form>
-        </div>
-            <g:renderErrors bean="${bookInstance}" as="list"/>
-                
+        </div>    
     </body>
 </html>

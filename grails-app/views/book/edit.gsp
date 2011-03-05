@@ -9,6 +9,7 @@
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
     </head>
     <body>
+    	<g:javascript src="book-support.js"/>
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
@@ -39,14 +40,22 @@
                                 </td>
                             </tr> 							
 							<g:set var="label" value="Authors:"/>
-							<g:each var="contribution" in="${bookInstance.contributions}">
+							<g:each var="cntr" in="${bookInstance.contributions}" status="index">
 								<tr>
 									<td>${label}</td>
 									<td valign="top">
-                                    <g:select name="contribution_${contribution.id}.author.id" from="${no.steria.trv.Author.list()}"/>                                
+									<g:select name="contributions[${index}].author.id" from="${no.steria.trv.Author.list()}" 
+                                    	optionKey="id" value="${cntr?.author?.id}"
+                                    	noSelection="${['null':message(code:'no_author.select',default:'No author')]}"/>                                                                    
 								</tr>
 								<g:set var="label" value = "&nbsp;"/>
 							</g:each>
+							<tr class="prop">
+                            	<td class="name" id="add_author">
+                            		<a href="#"><g:message code="book.add_authors.label" default="Add authors"/></a>
+                            	</td>
+                            	<td>&nbsp;</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -1,5 +1,6 @@
 package no.steria.trv
 
+import java.util.List;
 import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -18,7 +19,7 @@ class BookController {
     }
 
 	def create = {
-		def book = new Book()
+		def book = new Book()		
 		book.properties = params
 		return [bookInstance: book]
 	}
@@ -43,13 +44,19 @@ class BookController {
 		bookInstance.contributions.add(
 			new Contribution(author:new Author(firstName:"gredfdg",lastName:"praks"), book:bookInstance));
 		bookInstance.properties = params
-						
-		if (bookInstance.validate()) {
-			bookInstance.save()
-			bookInstance.contributions*.save()
-		}
 		
-		log.debug "book saved"
+		removeContributionsWithoutAuthors bookInstance.contributions
+		
+		if (bookInstance.validate()) {
+			def success = true;
+			bookInstance.contributions.each {
+				success = success && it.validate();
+			}
+			if (success) {			
+				bookInstance.save()
+				bookInstance.contributions*.save()
+			}
+		}		
 		return bookInstance
 	}	
 
@@ -120,4 +127,18 @@ class BookController {
             redirect(action: "list")
         }
     }
+	
+	def removeContributionsWithoutAuthors(List<Contribution> contributions) {
+		def removedAuthors = []
+		Integer index = 1
+		contributions.each {
+			if (index != 1 && it.author == null) {
+				removedAuthors.add(it);
+			}
+			index++
+		}
+		removedAuthors.each {
+			contributions.remove it
+		}
+	}
 }

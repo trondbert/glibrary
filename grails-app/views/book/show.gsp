@@ -37,9 +37,9 @@
 							<tr>
 								<td>${label}</td>
 								<td>${contribution.author}</td>
-							</tr>							
+							</tr>
+							<g:set var="label" value = "&nbsp;"/>
 						</g:each>
-						<g:set var="label" value = "&nbsp;"/>                    
                     </tbody>
                 </table>
             </div>

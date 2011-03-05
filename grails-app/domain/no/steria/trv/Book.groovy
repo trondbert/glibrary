@@ -9,7 +9,8 @@ class Book {
 	static hasMany = [contributions:Contribution]
 	
 	static constraints = {
-		title(blank:false)
+		title blank: false
+		contributions minSize: 1
 	}
 	
 	String toString() {

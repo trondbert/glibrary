@@ -128,7 +128,7 @@ class BookController {
         }
     }
 	
-	def removeContributionsWithoutAuthors(List<Contribution> contributions) {
+	private def removeContributionsWithoutAuthors(List<Contribution> contributions) {
 		def removedAuthors = []
 		Integer index = 1
 		contributions.each {

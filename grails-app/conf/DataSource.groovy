@@ -1,36 +1,26 @@
 dataSource {
     pooled = true
-    driverClassName = "oracle.jdbc.driver.OracleDriver"		
+    driverClassName = "org.h2.Driver"
+    username = "sa"
+    password = ""
 }
-hibernate {
-    cache.use_second_level_cache = true
-    cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
-}
-// environment specific settings
 environments {
     development {
         dataSource {
-            dbCreate = "update"
-			url = "jdbc:oracle:thin:@localhost:1521:xe"	
-			username = "grailsDev"
-			password = "grailsDev"			
+            dbCreate = "create-drop"
+            url = "jdbc:h2:mem:devDb;MVCC=TRUE"
         }
     }
     test {
         dataSource {
-            dbCreate = "create-drop"            
-			url = "jdbc:oracle:thin:@localhost:1521:xe"
-			username = "grailsTest"    
-			password = "grailsTest"
+            dbCreate = "update"
+            url = "jdbc:h2:mem:testDb;MVCC=TRUE"
         }
     }
     production {
         dataSource {
-            dbCreate = "update"            
-			url = "jdbc:oracle:thin:@localhost:1521:xe"
-			username = "grailsProd"    
-			password = "grailsProd"
+            dbCreate = "update"
+            url = "jdbc:h2:prodDb;MVCC=TRUE"
         }
     }
 }

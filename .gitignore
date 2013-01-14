@@ -5,3 +5,4 @@ glibrary.iml
 web-app/WEB-INF/classes/
 *.log
 *~
+.classpath

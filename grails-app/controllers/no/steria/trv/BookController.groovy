@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import org.apache.log4j.Logger;
+
 
 class BookController {
+
+	Logger logger = Logger.getLogger(getClass());
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 		
@@ -28,6 +32,8 @@ class BookController {
     	def bookInstance = saveNewBook()
 		
 		def contrib = bookInstance.contributions.toArray()[0]
+
+		logger.debug("nof contribs: " + bookInstance.contributions.size());
 		
         if (!bookInstance.hasErrors() && !contrib.hasErrors()) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"
@@ -40,23 +46,28 @@ class BookController {
 
 	def saveNewBook = {
 		def bookInstance = new Book()
-		//necessary for testing
-		bookInstance.contributions.add(
-			new Contribution(author:new Author(firstName:"gredfdg",lastName:"praks"), book:bookInstance));
+		logger.debug("nof contribs after book created: " + bookInstance.contributions?.size());
+		
 		bookInstance.properties = params
 		
-		removeContributionsWithoutAuthors bookInstance.contributions
+		logger.debug("nof contribs after data binding: " + bookInstance.contributions?.size());
+		
+		//removeContributionsWithoutAuthors bookInstance.contributions
 		
 		if (bookInstance.validate()) {
 			def success = true;
 			bookInstance.contributions.each {
 				success = success && it.validate();
 			}
-			if (success) {			
-				bookInstance.save()
-				bookInstance.contributions*.save()
+			logger.debug("nof contribs after validation: " + bookInstance.contributions?.size());
+			logger.debug(bookInstance.contributions[0])
+			if (success) {
+				bookInstance.save()			
+				logger.debug("nof contribs after saving: " + bookInstance.contributions?.size());
 			}
-		}		
+		}	
+		
+			
 		return bookInstance
 	}	
 
@@ -128,7 +139,7 @@ class BookController {
         }
     }
 	
-	private def removeContributionsWithoutAuthors(List<Contribution> contributions) {
+	private void removeContributionsWithoutAuthors(List<Contribution> contributions) {
 		def removedAuthors = []
 		Integer index = 1
 		contributions.each {

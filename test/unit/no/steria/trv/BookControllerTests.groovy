@@ -6,13 +6,18 @@ import java.util.Map;
 import org.apache.commons.collections.FactoryUtils;
 import org.apache.commons.collections.MapUtils;
 
-import grails.test.*
+import org.apache.log4j.Logger;
 
-class BookControllerTests extends ControllerUnitTestCase {
-    protected void setUp() {
-        super.setUp()
-		BookController.metaClass.message = {args -> println "message : ${args}"}
-    }
+@TestFor(BookController)
+@Mock([Book,Author,Contribution])
+class BookControllerTests {
+
+	Logger logger = Logger.getLogger(getClass());
+
+    //public void setUp() {
+      //  super.setUp()
+		//BookController.metaClass.message = {args -> println "message : ${args}"}
+    //}
 
     protected void tearDown() {
         super.tearDown()
@@ -20,15 +25,12 @@ class BookControllerTests extends ControllerUnitTestCase {
 
     void testSaveNewBook() {
 		def author = new Author(firstName:"Ari",lastName:"Behn")		
-		def authorRepo = [author]
-		mockDomain(Author, authorRepo)
-		 
-		mockDomain(Book) 
-		
-		mockDomain(Contribution)
+		author.save()
 						
-		def controller = new BookController();
-		BookController.metaClass.getParams = { -> ["create":"Create", "title":"foo", "contributions[0].author.id":"1"] }
+		params.create = "Create"
+		params.title = "foo"
+		params.put("contributions[0].author.id", "1");
+		params.contributions = [["author.id" : "1", "author" : ["id" : "1"]]]
 		
 		controller.save()
 		
@@ -56,7 +58,7 @@ class BookControllerTests extends ControllerUnitTestCase {
 
 		BookController.metaClass.getParams = {-> [title:"foo", "contributions[0].author.id":"null"]}
 
-		def controller = new BookController();		
+		//def controller = new BookController();		
 		controller.save()
 		
 		assertEquals 0, Book.list().size()
@@ -68,7 +70,7 @@ class BookControllerTests extends ControllerUnitTestCase {
 	
 	void testSaveNewBookWithEmptyContributions() {
 		def author = new Author(firstName:"Ari",lastName:"Behn")
-		def authorRepo = [author]
+		author.save()
 		mockDomain(Author, authorRepo)
 		 
 		mockDomain(Book)
@@ -76,8 +78,10 @@ class BookControllerTests extends ControllerUnitTestCase {
 		mockDomain(Contribution)
 						
 		def controller = new BookController();
-		BookController.metaClass.getParams = { -> ["create":"Create", "title":"foo", "contributions[0].author.id":"1",
-				"contributions[1].author.id":"null"] }
+		params.create = "Create"
+		params.title = "foo"
+		params.contributions[0].author.id = "1"
+		params.contributions[1].author.id = "null"		
 		
 		controller.save()
 		

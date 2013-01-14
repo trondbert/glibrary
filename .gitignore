@@ -1,1 +1,7 @@
+.settings/
+target/
+target-eclipse/
 glibrary.iml
+web-app/WEB-INF/classes/
+*.log
+*~

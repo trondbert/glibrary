@@ -7,14 +7,13 @@ class BootStrap {
     def init = { servletContext ->
 		// Check whether the test data already exists.
         if (!Book.count()) {
-			Author king = new Author(firstName:'Steffen',lastName:'King').save(failOnError: true)
+            Author king = new Author(firstName:'Stephen',lastName:'King')
             Book shining = new Book(title: "The Shining")
             Contribution contribution = new Contribution(book:shining, author:king)
+
+            king.save(failOnError: true)            
             shining.contributions = [contribution];
             shining.save(failOnError: true)
-
-			
-            //new Book(title: "Along Came a Spider").save(failOnError: true)
         }
     }
     def destroy = {    

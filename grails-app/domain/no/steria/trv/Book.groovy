@@ -1,6 +1,7 @@
 package no.steria.trv
 
 import no.steria.trv.Contribution
+import java.util.ArrayList
 
 class Book {
 	static transients = ["initialContribution"]
